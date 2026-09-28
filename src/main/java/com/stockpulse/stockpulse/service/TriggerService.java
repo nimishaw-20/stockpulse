@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TriggerService {
-    
+
     /**
-     * Checks if a LOW_STOCK trigger is detected for a given product
+     * Checks if a INVENTORY_LOW trigger is detected for a given product
      * @param product the product to check
-     * @return TriggerResult indicating whether LOW_STOCK trigger was detected
+     * @return TriggerResult indicating whether INVENTORY_LOW trigger was detected
      */
     public TriggerResult checkLowStockTrigger(Product product) {
         if (product.getStockLevel() < product.getReorderThreshold()) {
-            return new TriggerResult(true, TriggerType.LOW_STOCK, 
-                "LOW_STOCK trigger detected for product: " + product.getSku());
+            return new TriggerResult(true, TriggerType.INVENTORY_LOW, 
+                "INVENTORY_LOW trigger detected for product: " + product.getSku());
         }
         return new TriggerResult(false, null, null);
     }

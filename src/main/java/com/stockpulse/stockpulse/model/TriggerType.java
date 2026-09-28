@@ -1,7 +1,8 @@
 package com.stockpulse.stockpulse.model;
 
 public enum TriggerType {
-    LOW_STOCK,
+    INITIAL,
+    INVENTORY_LOW,
     DEMAND_SPIKE,
     MANUAL
 }

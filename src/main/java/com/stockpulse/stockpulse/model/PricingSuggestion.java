@@ -21,16 +21,19 @@ public class PricingSuggestion {
     @PositiveOrZero
     private double recommendedPrice;
     
+    @Enumerated(EnumType.STRING)
+    private PricingDirection direction;
+    
     @PositiveOrZero
     private double confidence;
     
     private String reasoning;
     
     @Enumerated(EnumType.STRING)
-    private TriggerType triggerType;
+    private SuggestionStatus status = SuggestionStatus.PENDING;
     
     @Enumerated(EnumType.STRING)
-    private SuggestionStatus status = SuggestionStatus.PENDING;
+    private TriggerType triggerReason;
     
     private LocalDateTime createdAt;
     
@@ -39,14 +42,15 @@ public class PricingSuggestion {
     
     // Constructor
     public PricingSuggestion(Product product, double currentPrice, double recommendedPrice, 
-                             double confidence, String reasoning, TriggerType triggerType, 
-                             LocalDateTime createdAt) {
+                             PricingDirection direction, double confidence, String reasoning, 
+                             TriggerType triggerReason, LocalDateTime createdAt) {
         this.product = product;
         this.currentPrice = currentPrice;
         this.recommendedPrice = recommendedPrice;
+        this.direction = direction;
         this.confidence = confidence;
         this.reasoning = reasoning;
-        this.triggerType = triggerType;
+        this.triggerReason = triggerReason;
         this.createdAt = createdAt;
     }
     
@@ -67,6 +71,10 @@ public class PricingSuggestion {
         return recommendedPrice;
     }
     
+    public PricingDirection getDirection() {
+        return direction;
+    }
+    
     public double getConfidence() {
         return confidence;
     }
@@ -75,12 +83,12 @@ public class PricingSuggestion {
         return reasoning;
     }
     
-    public TriggerType getTriggerType() {
-        return triggerType;
-    }
-    
     public SuggestionStatus getStatus() {
         return status;
+    }
+    
+    public TriggerType getTriggerReason() {
+        return triggerReason;
     }
     
     public LocalDateTime getCreatedAt() {
@@ -104,6 +112,10 @@ public class PricingSuggestion {
         this.recommendedPrice = recommendedPrice;
     }
     
+    public void setDirection(PricingDirection direction) {
+        this.direction = direction;
+    }
+    
     public void setConfidence(double confidence) {
         this.confidence = confidence;
     }
@@ -112,12 +124,12 @@ public class PricingSuggestion {
         this.reasoning = reasoning;
     }
     
-    public void setTriggerType(TriggerType triggerType) {
-        this.triggerType = triggerType;
-    }
-    
     public void setStatus(SuggestionStatus status) {
         this.status = status;
+    }
+    
+    public void setTriggerReason(TriggerType triggerReason) {
+        this.triggerReason = triggerReason;
     }
     
     public void setCreatedAt(LocalDateTime createdAt) {

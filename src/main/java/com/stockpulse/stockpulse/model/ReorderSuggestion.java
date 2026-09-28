@@ -16,7 +16,13 @@ public class ReorderSuggestion {
     private Product product;
     
     @PositiveOrZero
+    private int currentStock;
+    
+    @PositiveOrZero
     private int recommendedQuantity;
+    
+    @PositiveOrZero
+    private int suggestedLeadTimeDays;
     
     @PositiveOrZero
     private double confidence;
@@ -24,10 +30,10 @@ public class ReorderSuggestion {
     private String reasoning;
     
     @Enumerated(EnumType.STRING)
-    private TriggerType triggerType;
+    private SuggestionStatus status = SuggestionStatus.PENDING;
     
     @Enumerated(EnumType.STRING)
-    private SuggestionStatus status = SuggestionStatus.PENDING;
+    private TriggerType triggerReason;
     
     private LocalDateTime createdAt;
     
@@ -35,13 +41,16 @@ public class ReorderSuggestion {
     public ReorderSuggestion() {}
     
     // Constructor
-    public ReorderSuggestion(Product product, int recommendedQuantity, double confidence, 
-                             String reasoning, TriggerType triggerType, LocalDateTime createdAt) {
+    public ReorderSuggestion(Product product, int currentStock, int recommendedQuantity, 
+                             int suggestedLeadTimeDays, double confidence, String reasoning, 
+                             TriggerType triggerReason, LocalDateTime createdAt) {
         this.product = product;
+        this.currentStock = currentStock;
         this.recommendedQuantity = recommendedQuantity;
+        this.suggestedLeadTimeDays = suggestedLeadTimeDays;
         this.confidence = confidence;
         this.reasoning = reasoning;
-        this.triggerType = triggerType;
+        this.triggerReason = triggerReason;
         this.createdAt = createdAt;
     }
     
@@ -54,8 +63,16 @@ public class ReorderSuggestion {
         return product;
     }
     
+    public int getCurrentStock() {
+        return currentStock;
+    }
+    
     public int getRecommendedQuantity() {
         return recommendedQuantity;
+    }
+    
+    public int getSuggestedLeadTimeDays() {
+        return suggestedLeadTimeDays;
     }
     
     public double getConfidence() {
@@ -66,12 +83,12 @@ public class ReorderSuggestion {
         return reasoning;
     }
     
-    public TriggerType getTriggerType() {
-        return triggerType;
-    }
-    
     public SuggestionStatus getStatus() {
         return status;
+    }
+    
+    public TriggerType getTriggerReason() {
+        return triggerReason;
     }
     
     public LocalDateTime getCreatedAt() {
@@ -87,8 +104,16 @@ public class ReorderSuggestion {
         this.product = product;
     }
     
+    public void setCurrentStock(int currentStock) {
+        this.currentStock = currentStock;
+    }
+    
     public void setRecommendedQuantity(int recommendedQuantity) {
         this.recommendedQuantity = recommendedQuantity;
+    }
+    
+    public void setSuggestedLeadTimeDays(int suggestedLeadTimeDays) {
+        this.suggestedLeadTimeDays = suggestedLeadTimeDays;
     }
     
     public void setConfidence(double confidence) {
@@ -99,12 +124,12 @@ public class ReorderSuggestion {
         this.reasoning = reasoning;
     }
     
-    public void setTriggerType(TriggerType triggerType) {
-        this.triggerType = triggerType;
-    }
-    
     public void setStatus(SuggestionStatus status) {
         this.status = status;
+    }
+    
+    public void setTriggerReason(TriggerType triggerReason) {
+        this.triggerReason = triggerReason;
     }
     
     public void setCreatedAt(LocalDateTime createdAt) {

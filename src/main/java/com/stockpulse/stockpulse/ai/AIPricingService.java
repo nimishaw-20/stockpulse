@@ -2,6 +2,8 @@ package com.stockpulse.stockpulse.ai;
 
 import com.stockpulse.stockpulse.model.Product;
 import com.stockpulse.stockpulse.model.PricingSuggestion;
+import com.stockpulse.stockpulse.model.PricingDirection;
+import com.stockpulse.stockpulse.model.SuggestionStatus;
 import com.stockpulse.stockpulse.model.TriggerType;
 import com.stockpulse.stockpulse.strategy.PricingStrategy;
 import com.stockpulse.stockpulse.strategy.RuleBasedPricingStrategy;
@@ -45,15 +47,19 @@ public class AIPricingService {
             
             // Validate AI response
             if (isValidAIPricingResponse(aiResponse, product.getCurrentPrice())) {
+                // Determine pricing direction
+                PricingDirection direction = determinePricingDirection(product.getCurrentPrice(), aiResponse.getRecommendedPrice());
+                
                 // Create pricing suggestion from valid AI response
                 PricingSuggestion suggestion = new PricingSuggestion();
                 suggestion.setProduct(product);
                 suggestion.setCurrentPrice(product.getCurrentPrice());
                 suggestion.setRecommendedPrice(aiResponse.getRecommendedPrice());
+                suggestion.setDirection(direction);
                 suggestion.setConfidence(aiResponse.getConfidence());
                 suggestion.setReasoning(aiResponse.getReasoning());
-                suggestion.setTriggerType(triggerType);
-                suggestion.setStatus(com.stockpulse.stockpulse.model.SuggestionStatus.PENDING);
+                suggestion.setTriggerReason(triggerType);
+                suggestion.setStatus(SuggestionStatus.PENDING);
                 suggestion.setCreatedAt(java.time.LocalDateTime.now());
                 return suggestion;
             }
@@ -99,5 +105,22 @@ public class AIPricingService {
         }
         
         return true;
+    }
+    
+    /**
+     * Determine the pricing direction based on current and recommended prices
+     * 
+     * @param currentPrice the current price of the product
+     * @param recommendedPrice the recommended price
+     * @return the pricing direction (INCREASE, DECREASE, or HOLD)
+     */
+    private PricingDirection determinePricingDirection(double currentPrice, double recommendedPrice) {
+        if (recommendedPrice > currentPrice) {
+            return PricingDirection.INCREASE;
+        } else if (recommendedPrice < currentPrice) {
+            return PricingDirection.DECREASE;
+        } else {
+            return PricingDirection.HOLD;
+        }
     }
 }

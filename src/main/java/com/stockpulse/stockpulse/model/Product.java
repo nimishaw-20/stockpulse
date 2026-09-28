@@ -37,6 +37,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status = ProductStatus.ACTIVE;
     
+    private Double costPrice;
+    
     // No-argument constructor required by JPA
     public Product() {}
     
@@ -89,6 +91,10 @@ public class Product {
         return status;
     }
     
+    public Double getCostPrice() {
+        return costPrice;
+    }
+    
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -124,5 +130,9 @@ public class Product {
     
     public void setStatus(ProductStatus status) {
         this.status = status;
+    }
+    
+    public void setCostPrice(Double costPrice) {
+        this.costPrice = costPrice;
     }
 }
